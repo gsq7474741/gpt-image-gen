@@ -75,7 +75,7 @@ export const useAppStore = create<AppState>()(
   persist(
     (set, get) => ({
       apiKey: 'sk-Sx9OrE7d6LIUVmfFJDLtwXy23pCfntJ2ArHve9Hh6L9rx1Z',
-      apiBase: 'https://api.openai-proxy.org',
+      apiBase: 'http://api.openai-proxy.org/v1',
       conversations: [],
       activeConversationId: null,
       isLoading: false,
