@@ -134,6 +134,7 @@ export default function Home() {
         if (!response.ok) {
           const errorData = await response.json()
           throw new Error(errorData.error || '图像生成失败')
+          console.error('图像生成失败:', errorData)
         }
 
         const result = await response.json()
@@ -271,6 +272,7 @@ export default function Home() {
       if (!response.ok) {
         const errorData = await response.json()
         throw new Error(errorData.error || '图像生成失败')
+        console.error('图像生成失败:', errorData)
       }
 
       const result = await response.json()
