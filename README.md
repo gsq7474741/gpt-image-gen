@@ -6,11 +6,11 @@
   <p>中文 | <a href="README.en.md">English</a></p>
 </div>
 
-## 🌐 在线体验
+## 🌐 在线体验 [![Netlify Status](https://api.netlify.com/api/v1/badges/bad752a0-0023-4bc2-bd45-e29b7da1eb94/deploy-status)](https://app.netlify.com/sites/gpt-image-gen-51v7f/deploys)
 
 无需安装，直接访问我们的在线演示版本：
 
-[http://gpt-image-gen-gsq7474741.windsurf.build](http://gpt-image-gen-gsq7474741.windsurf.build)
+[http://gpt-image-gen.windsurf.build](http://gpt-image-gen.windsurf.build)
 
 ## 🌟 GPT-Image-1 模型介绍
 
