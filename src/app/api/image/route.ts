@@ -64,34 +64,7 @@ export async function POST(req: NextRequest) {
         quality: quality as any,
         background: background as any,
       })
-      // 可选：保存生成的图像到本地文件
-      if (result.data && result.data[0].b64_json) {
-        const imageData = result.data[0].b64_json;
-        const imageBuffer = Buffer.from(imageData, 'base64');
-
-        // 创建唯一文件名
-        const timestamp = Date.now();
-        const fileName = `generated_image_${timestamp}.png`;
-
-        // 使用 Node.js fs 模块写入文件
-        const fs = require('fs');
-        const path = require('path');
-
-        // 确保目录存在
-        const uploadDir = path.join(process.cwd(), 'public', 'generated');
-        if (!fs.existsSync(uploadDir)) {
-          fs.mkdirSync(uploadDir, { recursive: true });
-        }
-
-        // 写入文件
-        const filePath = path.join(uploadDir, fileName);
-        fs.writeFileSync(filePath, imageBuffer);
-
-      }
-
-      console.log(result)
     }
-
     return NextResponse.json(result)
   } catch (error: any) {
     console.error('图像API错误:', error)
