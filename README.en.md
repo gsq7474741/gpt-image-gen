@@ -6,6 +6,12 @@
   <p><a href="README.md">中文文档</a> | English</p>
 </div>
 
+## 🌐 Online Demo
+
+No installation needed, directly access our online demo version:
+
+[http://gpt-image-gen-gsq7474741.windsurf.build](http://gpt-image-gen-gsq7474741.windsurf.build)
+
 ## 🌟 About GPT-Image-1 Model
 
 GPT-Image-1 is OpenAI's latest native multimodal image generation model and the core technology driving the image generation feature in ChatGPT. In the first week of its release, it was used by over 130 million users worldwide, creating more than 700 million images.

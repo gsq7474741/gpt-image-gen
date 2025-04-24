@@ -6,6 +6,12 @@
   <p>中文 | <a href="README.en.md">English</a></p>
 </div>
 
+## 🌐 在线体验
+
+无需安装，直接访问我们的在线演示版本：
+
+[http://gpt-image-gen-gsq7474741.windsurf.build](http://gpt-image-gen-gsq7474741.windsurf.build)
+
 ## 🌟 GPT-Image-1 模型介绍
 
 GPT-Image-1 是 OpenAI 推出的最新原生多模态图像生成模型，也是驱动 ChatGPT 中图像生成功能的核心技术。该模型在发布的第一周内就已经被全球超过 1.3 亿用户使用，创建了超过 7 亿张图像。
