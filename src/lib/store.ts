@@ -42,6 +42,35 @@ interface AppState {
   getActiveMessages: () => Message[]
 }
 
+// 存储图片数据的键前缀
+const IMAGE_STORAGE_PREFIX = 'gpt-image-chat-img-';
+
+// 辅助函数：保存图片数据到localStorage
+const saveImageToStorage = (imageId: string, imageUrl: string) => {
+  if (typeof window === 'undefined') return;
+  
+  try {
+    // 只保存base64格式的图片
+    if (imageUrl.startsWith('data:')) {
+      localStorage.setItem(`${IMAGE_STORAGE_PREFIX}${imageId}`, imageUrl);
+    }
+  } catch (e) {
+    console.error('保存图片数据失败:', e);
+  }
+};
+
+// 辅助函数：从localStorage获取图片数据
+const getImageFromStorage = (imageId: string): string | null => {
+  if (typeof window === 'undefined') return null;
+  
+  try {
+    return localStorage.getItem(`${IMAGE_STORAGE_PREFIX}${imageId}`);
+  } catch (e) {
+    console.error('获取图片数据失败:', e);
+    return null;
+  }
+};
+
 // 辅助函数：清理消息中的图片数据
 const cleanMessagesForStorage = (conversations: Conversation[]): Conversation[] => {
   return conversations.map(conv => ({
@@ -52,15 +81,21 @@ const cleanMessagesForStorage = (conversations: Conversation[]): Conversation[] 
         return msg;
       }
       
-      // 对于有图片的消息，只保留图片的引用信息，不保存base64数据
+      // 对于有图片的消息，保存图片数据并替换为占位符
       return {
         ...msg,
-        images: msg.images.map(img => {
-          // 如果图片URL是base64格式，替换为占位符
+        images: msg.images.map((img, index) => {
+          // 生成唯一的图片ID
+          const imageId = `${msg.id}-${index}`;
+          
+          // 如果图片URL是base64格式，保存到localStorage并替换为占位符
           if (img.url.startsWith('data:')) {
+            // 保存图片数据
+            saveImageToStorage(imageId, img.url);
+            
             return {
               ...img,
-              url: '[图片数据]', // 替换为占位符
+              url: `[图片数据:${imageId}]`, // 占位符中包含图片ID
               originalUrl: undefined // 不保存原始URL
             };
           }
@@ -201,7 +236,40 @@ export const useAppStore = create<AppState>()(
             if (isServer) return null;
             
             try {
-              return localStorage.getItem(name);
+              const data = localStorage.getItem(name);
+              if (!data) return null;
+              
+              // 解析存储的数据
+              const parsedData = JSON.parse(data);
+              
+              // 如果有conversations，尝试恢复图片数据
+              if (parsedData && parsedData.state && parsedData.state.conversations) {
+                parsedData.state.conversations.forEach((conv: Conversation) => {
+                  conv.messages.forEach(msg => {
+                    if (msg.images && msg.images.length > 0) {
+                      msg.images = msg.images.map((img, index) => {
+                        // 检查是否是占位符格式
+                        const match = typeof img.url === 'string' && img.url.match(/\[图片数据:(.+?)\]/);
+                        if (match) {
+                          const imageId = match[1];
+                          const imageData = getImageFromStorage(imageId);
+                          
+                          // 如果找到了图片数据，恢复URL
+                          if (imageData) {
+                            return {
+                              ...img,
+                              url: imageData
+                            };
+                          }
+                        }
+                        return img;
+                      });
+                    }
+                  });
+                });
+              }
+              
+              return JSON.stringify(parsedData);
             } catch (e) {
               console.error('读取本地存储失败:', e);
               return null;
