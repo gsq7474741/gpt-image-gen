@@ -5,3 +5,11 @@
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
+
+
+[functions]
+  # 增加函数超时时间至30秒
+  node_bundler = "esbuild"
+  external_node_modules = [""]
+  included_files = [""]
+  timeout = 180
